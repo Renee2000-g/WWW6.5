@@ -14,6 +14,18 @@ contract VaultManager {
     event BoxCreated(address indexed owner, address indexed boxAddress, string boxType);
     event BoxNamed(address indexed boxAddress, string name);
 
+    modifier onlyBoxOwner(address boxAddress) {
+       bool owned = false;
+        for (uint i = 0; i < userDepositBoxes[msg.sender].length; i++) {
+            if (userDepositBoxes[msg.sender][i] == boxAddress) {
+                owned = true;
+                break;
+            }
+        }
+        require(owned, "Box not owned by sender");
+        _;
+    }
+
     function createBasicBox() external returns (address) {
         BasicDepositBox box = new BasicDepositBox();
         userDepositBoxes[msg.sender].push(address(box));
@@ -35,42 +47,8 @@ contract VaultManager {
         return address(box);
     }
 
-    function nameBox(address boxAddress, string calldata name) external {
-        bool owned = false;
-        for (uint i = 0; i < userDepositBoxes[msg.sender].length; i++) {
-            if (userDepositBoxes[msg.sender][i] == boxAddress) {
-                owned = true;
-                break;
-            }
-        }
-        require(owned, "Box not owned by sender");
 
-        boxNames[boxAddress] = name;
-        emit BoxNamed(boxAddress, name);
-    }
-
-    function storeSecret(address boxAddress, string calldata secret) external {
-        bool owned = false;
-        for (uint i = 0; i < userDepositBoxes[msg.sender].length; i++) {
-            if (userDepositBoxes[msg.sender][i] == boxAddress) {
-                owned = true;
-                break;
-            }
-        }
-        require(owned, "Box not owned by sender");
-        IDepositBox box = IDepositBox(boxAddress);
-        box.storeSecret(secret);
-    }
-    function transferBoxOwnership(address boxAddress, address newOwner) external {
-        bool owned = false;
-        for (uint i = 0; i < userDepositBoxes[msg.sender].length; i++) {
-            if (userDepositBoxes[msg.sender][i] == boxAddress) {
-                owned = true;
-                break;
-            }
-        }
-        require(owned, "Box not owned by sender");
-
+    function transferBoxOwnership(address boxAddress, address newOwner) external onlyBoxOwner(boxAddress){
         IDepositBox box = IDepositBox(boxAddress);
         box.transferOwnership(newOwner);
 
