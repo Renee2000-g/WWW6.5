@@ -99,7 +99,7 @@ contract SimpleFitnessTracker {
         }
     }
 
-    function getUserWorkoutCount() public view onlyRegistered returns (uint256) {
+    function getUserWorkoutCount() public view onlyRegistered returns(uint256) {
         return totalWorkouts[msg.sender]; //return workoutHistoey[msg.sender].length;
     }
     

@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 contract ScientificCalculator {
     // advanced operations
+    
 
     //指数power
     function power(uint256 base, uint256 exponent) public pure returns(uint256) {

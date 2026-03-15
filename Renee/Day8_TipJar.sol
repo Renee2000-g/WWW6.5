@@ -17,7 +17,7 @@ contract TipJar {
       }
 
     //functions
-    function addCurrency(string memory _currencyCode, uint256 _rateToETH) public onlyOwner{
+    function addCurrency(string memory _currencyCode, uint256 _rateToETH) public onlyOwner {
         require(_rateToETH > 0, "Conversion rate to ETH must be greater than 0");
 
         //check if currency already exists ————这里为什么不用之前查重registeredMember的mapping？

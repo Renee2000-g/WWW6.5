@@ -22,7 +22,7 @@ contract Calculator { //basic arithmetic functions
     }
 
     //basic math functions
-    function add(uint256 a, uint b) public pure returns (uint256) {
+    function add(uint256 a, uint b) public pure returns(uint256) {
         uint256 result = a + b;
         return result;
     }
